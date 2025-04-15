@@ -3,6 +3,7 @@ import dash
 from dash import dash_table, html
 import dash_bootstrap_components as dbc
 from datetime import datetime
+import os
 
 # === CONFIGURAÇÃO DO GOOGLE SHEETS ===
 spreadsheet_id = "13Yqhezy8VIknbs0083sCwsIgqw5VIJrqCTM8_Ry_de0"
@@ -84,4 +85,5 @@ app.layout = dbc.Container([
 ], fluid=True)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8050))
+    app.run(debug=True, host="0.0.0.0", port=port)
