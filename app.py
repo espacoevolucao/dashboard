@@ -93,14 +93,30 @@ app.layout = dbc.Container([
             width=6  # metade da tela
         ),
         dbc.Col(
-            html.Div([
-                html.H5("Espaço para filtros ou gráficos", className="mb-3"),
-                html.P("Aqui você pode adicionar filtros, controles ou gráficos complementares."),
-                # Exemplos:
-                # dbc.Input(placeholder="Filtrar cliente..."),
-                # dcc.Graph(...)
-            ]),
-            width=6
+            dash_table.DataTable(
+                columns=[
+                    {"name": "Cliente", "id": "Cliente"},
+                    {"name": "Plano de Saúde", "id": "Plano de Saúde"},
+                    {"name": "Data Nota", "id": "Data Nota"},
+                    {"name": "Data Pagamento", "id": "Data Pagamento"},
+                ],
+                data=df.to_dict('records'),
+                style_cell={
+                    'textAlign': 'left',
+                    'padding': '5px',
+                    'minWidth': '100px',
+                    'fontSize': '13px',
+                    'whiteSpace': 'normal'
+                },
+                style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold'},
+                style_data_conditional=[
+                    {'if': {'filter_query': '{Data Pagamento} contains "/"'}, 'backgroundColor': '#d4edda'},  # Verde
+                    {'if': {'filter_query': '{Data Pagamento} = ""'}, 'backgroundColor': '#ffe6f0'},          # Rosa claro
+                ],
+                page_size=30,
+                style_table={'overflowX': 'auto'}
+            ),
+            width=6  # metade da tela
         )
     ])
 ], fluid=True)
