@@ -59,29 +59,50 @@ df['pagamento_mes'] = df['Data Pagamento'].notna()
 df['Data Nota'] = pd.to_datetime(df['Data Nota'], errors='coerce').dt.strftime('%d/%m/%Y')
 df['Data Pagamento'] = pd.to_datetime(df['Data Pagamento'], errors='coerce').dt.strftime('%d/%m/%Y')
 
-# DASHBOARD
+# === DASH APP ===
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.layout = dbc.Container([
-    html.H2("Última Nota do Mês - Colorido por Presença de Pagamento", className="my-4"),
+    html.H2("Relatório - Clientes", className="my-4"),
 
-    dash_table.DataTable(
-        columns=[
-            {"name": "Cliente", "id": "Cliente"},
-            {"name": "Plano de Saúde", "id": "Plano de Saúde"},
-            {"name": "Data Nota", "id": "Data Nota"},
-            {"name": "Data Pagamento", "id": "Data Pagamento"},
-        ],
-        data=df.to_dict('records'),
-        style_cell={'textAlign': 'left', 'padding': '5px'},
-        style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold'},
-        style_data_conditional=[
-            {'if': {'filter_query': '{Data Pagamento} contains "/"'}, 'backgroundColor': '#d4edda'},  # Verde
-            {'if': {'filter_query': '{Data Pagamento} = ""'}, 'backgroundColor': '#ffe6f0'},          # Rosa claro
-        ],
-        page_size=90,
-        style_table={'overflowX': 'auto'}
-    )
+    dbc.Row([
+        dbc.Col(
+            dash_table.DataTable(
+                columns=[
+                    {"name": "Cliente", "id": "Cliente"},
+                    {"name": "Plano de Saúde", "id": "Plano de Saúde"},
+                    {"name": "Data Nota", "id": "Data Nota"},
+                    {"name": "Data Pagamento", "id": "Data Pagamento"},
+                ],
+                data=df.to_dict('records'),
+                style_cell={
+                    'textAlign': 'left',
+                    'padding': '5px',
+                    'minWidth': '100px',
+                    'fontSize': '13px',
+                    'whiteSpace': 'normal'
+                },
+                style_header={'backgroundColor': 'lightgray', 'fontWeight': 'bold'},
+                style_data_conditional=[
+                    {'if': {'filter_query': '{Data Pagamento} contains "/"'}, 'backgroundColor': '#d4edda'},  # Verde
+                    {'if': {'filter_query': '{Data Pagamento} = ""'}, 'backgroundColor': '#ffe6f0'},          # Rosa claro
+                ],
+                page_size=30,
+                style_table={'overflowX': 'auto'}
+            ),
+            width=6  # metade da tela
+        ),
+        dbc.Col(
+            html.Div([
+                html.H5("Espaço para filtros ou gráficos", className="mb-3"),
+                html.P("Aqui você pode adicionar filtros, controles ou gráficos complementares."),
+                # Exemplos:
+                # dbc.Input(placeholder="Filtrar cliente..."),
+                # dcc.Graph(...)
+            ]),
+            width=6
+        )
+    ])
 ], fluid=True)
 
 if __name__ == "__main__":
