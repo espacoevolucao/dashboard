@@ -40,7 +40,7 @@ app.layout = dbc.Container([
                     {'if': {'filter_query': '{Data Pagamento} contains "/"'}, 'backgroundColor': '#d4edda'},
                     {'if': {'filter_query': '{Data Pagamento} = ""'}, 'backgroundColor': '#ffe6f0'},
                 ],
-                page_size=20,
+                page_size=25,
                 style_table={'overflowX': 'auto'}
             ),
             width=6
@@ -66,7 +66,7 @@ app.layout = dbc.Container([
                     {'if': {'filter_query': '{Data Pagamento} contains "/"'}, 'backgroundColor': '#d4edda'},
                     {'if': {'filter_query': '{Data Pagamento} = ""'}, 'backgroundColor': '#ffe6f0'},
                 ],
-                page_size=20,
+                page_size=25,
                 style_table={'overflowX': 'auto'}
             ),
             width=6
